@@ -169,31 +169,31 @@ export default function Home() {
           <motion.div
             className="pointer-events-none absolute inset-0"
             animate={{
-              opacity: [0.04, 0.1, 0.04],
+              opacity: [0.08, 0.18, 0.08],
             }}
             transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
             style={{
               background:
-                "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08), transparent 50%)",
+                "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.14), transparent 52%)",
             }}
           />
           <motion.div
-            className="pointer-events-none absolute inset-0 opacity-[0.14]"
+            className="pointer-events-none absolute inset-0 opacity-[0.22]"
             animate={{ backgroundPositionX: ["0%", "100%"] }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
             style={{
               backgroundImage:
-                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.14) 50%, transparent 100%)",
+                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.26) 50%, transparent 100%)",
               backgroundSize: "220% 100%",
             }}
           />
           <motion.div
-            className="pointer-events-none absolute inset-0 opacity-[0.16]"
-            animate={{ opacity: [0.08, 0.18, 0.08] }}
+            className="pointer-events-none absolute inset-0 opacity-[0.24]"
+            animate={{ opacity: [0.14, 0.26, 0.14] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
             style={{
               backgroundImage:
-                "repeating-linear-gradient(0deg, rgba(255,255,255,0.08) 0, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 36px)",
+                "repeating-linear-gradient(0deg, rgba(255,255,255,0.12) 0, rgba(255,255,255,0.12) 1px, transparent 1px, transparent 36px)",
             }}
           />
           <div className="flex flex-col gap-7 justify-center">
@@ -252,7 +252,7 @@ export default function Home() {
                   y: [0, -2, 0],
                   boxShadow: [
                     "0 0 0 rgba(255,255,255,0)",
-                    "0 0 16px rgba(255,255,255,0.12)",
+                    "0 0 20px rgba(255,255,255,0.18)",
                     "0 0 0 rgba(255,255,255,0)",
                   ],
                 }}
@@ -260,7 +260,7 @@ export default function Home() {
                 {i > 0 && (
                   <div className="absolute left-8 -top-5 w-[1px] h-5 bg-white/10 overflow-hidden">
                     <motion.div
-                      className="w-full h-3 bg-white/40"
+                      className="w-full h-3 bg-white/65"
                       animate={{ y: ["-100%", "150%"] }}
                       transition={{ duration: 1.8, repeat: Infinity, ease: "linear", delay: i * 0.25 }}
                     />
@@ -269,7 +269,7 @@ export default function Home() {
                 {i < 2 && (
                   <div className="absolute left-8 -bottom-5 w-[1px] h-5 bg-white/10 overflow-hidden">
                     <motion.div
-                      className="w-full h-3 bg-white/40"
+                      className="w-full h-3 bg-white/65"
                       animate={{ y: ["-100%", "150%"] }}
                       transition={{ duration: 1.8, repeat: Infinity, ease: "linear", delay: (i + 1) * 0.2 }}
                     />
@@ -281,7 +281,7 @@ export default function Home() {
                   transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: i * 0.5 }}
                   style={{
                     background:
-                      "linear-gradient(100deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%)",
+                      "linear-gradient(100deg, transparent 40%, rgba(255,255,255,0.14) 50%, transparent 60%)",
                   }}
                 />
                 <div className="w-9 h-9 border border-white/25 flex items-center justify-center text-white/60">{n.icon}</div>
@@ -394,11 +394,11 @@ export default function Home() {
                       key={step}
                       animate={{
                         opacity: pipelineStep >= index ? 1 : 0.45,
-                        borderColor:
-                          pipelineStep === index ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.15)",
                       }}
                       transition={{ duration: 0.35 }}
-                      className="px-2.5 py-2 border text-white/80"
+                      className={`px-2.5 py-2 border text-white/80 ${
+                        pipelineStep === index ? "border-white/55" : "border-white/15"
+                      }`}
                     >
                       {step}
                     </motion.div>
