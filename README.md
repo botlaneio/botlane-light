@@ -30,6 +30,7 @@ App runs at [http://localhost:3000](http://localhost:3000).
 ## Environment Variables
 
 - `LEAD_WEBHOOK_URL` (optional) - receives form submissions from `/api/leads` as JSON payload.
+- `ANALYTICS_WEBHOOK_URL` (optional) - receives event payloads from `/api/events`.
 
 ## Project Structure
 

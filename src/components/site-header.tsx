@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { TrackedLink } from "@/components/tracked-link";
 
 const NAV_ITEMS = [
   { label: "HOW IT WORKS", href: "/how-it-works" },
@@ -52,9 +53,11 @@ export function SiteHeader() {
 
         <nav className="hidden md:flex gap-8 font-mono text-xs tracking-widest text-white/35">
           {NAV_ITEMS.map((item) => (
-            <Link
+            <TrackedLink
               key={item.href}
               href={item.href}
+              eventName="nav_click"
+              eventMeta={{ location: "header_desktop", target: item.href }}
               aria-current={pathname === item.href ? "page" : undefined}
               className={
                 pathname === item.href
@@ -63,14 +66,16 @@ export function SiteHeader() {
               }
             >
               {item.label}
-            </Link>
+            </TrackedLink>
           ))}
-          <Link
+          <TrackedLink
             href="/book-call"
+            eventName="cta_click"
+            eventMeta={{ location: "header_desktop", target: "/book-call" }}
             className="px-4 py-2 border border-white/40 text-white/70 uppercase font-mono text-xs hover:bg-white hover:text-black transition-colors"
           >
             Initialize
-          </Link>
+          </TrackedLink>
         </nav>
       </div>
 
@@ -78,9 +83,11 @@ export function SiteHeader() {
         <nav className="md:hidden mt-4 border border-white/12 bg-white/[0.02] p-4">
           <div className="flex flex-col gap-3 font-mono text-xs tracking-widest text-white/40">
             {NAV_ITEMS.map((item) => (
-              <Link
+              <TrackedLink
                 key={item.href}
                 href={item.href}
+                eventName="nav_click"
+                eventMeta={{ location: "header_mobile", target: item.href }}
                 aria-current={pathname === item.href ? "page" : undefined}
                 onClick={closeMobileMenu}
                 className={
@@ -90,16 +97,18 @@ export function SiteHeader() {
                 }
               >
                 {item.label}
-              </Link>
+              </TrackedLink>
             ))}
           </div>
-          <Link
+          <TrackedLink
             href="/book-call"
+            eventName="cta_click"
+            eventMeta={{ location: "header_mobile", target: "/book-call" }}
             onClick={closeMobileMenu}
             className="mt-4 w-full px-4 py-2 border border-white/40 text-white/70 uppercase font-mono text-xs hover:bg-white hover:text-black transition-colors"
           >
             Initialize
-          </Link>
+          </TrackedLink>
         </nav>
       )}
     </header>

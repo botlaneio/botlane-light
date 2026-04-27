@@ -3,9 +3,9 @@
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useEffect } from "react";
 import { ArrowRight, Database, Mail, Calendar, X, CheckCircle2, TrendingUp, MessageSquare, Zap, Shield, Target, Users } from "lucide-react";
-import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { TrackedLink } from "@/components/tracked-link";
 
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -103,12 +103,14 @@ export default function Home() {
               <p className="font-mono text-xs text-white/35 tracking-widest uppercase">[ 5–40 qualified meetings/month depending on plan ]</p>
             </motion.div>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.35 }} className="flex gap-4 mt-2">
-              <Link
+              <TrackedLink
                 href="/book-call"
+                eventName="cta_click"
+                eventMeta={{ location: "home_hero", target: "/book-call" }}
                 className="px-7 py-3.5 border border-white/50 text-white font-mono text-sm tracking-widest uppercase flex items-center gap-3 group/b hover:bg-white hover:text-black transition-colors"
               >
                 Build_Pipeline <ArrowRight className="w-4 h-4 group-hover/b:translate-x-1 transition-transform" />
-              </Link>
+              </TrackedLink>
             </motion.div>
           </div>
 
@@ -294,12 +296,14 @@ export default function Home() {
                       <span className="text-white/40">&gt;</span>TGT: {t.target}
                     </li>
                   </ul>
-                  <Link
+                  <TrackedLink
                     href="/book-call"
+                    eventName="cta_click"
+                    eventMeta={{ location: "home_pricing_card", target: `/book-call_${t.tier}` }}
                     className="w-full py-3 border border-white/25 text-white/55 font-mono text-xs uppercase text-center hover:bg-white hover:text-black transition-colors"
                   >
                     INITIALIZE_{t.tier}
-                  </Link>
+                  </TrackedLink>
                 </motion.div>
               ))}
             </div>
@@ -375,13 +379,15 @@ export default function Home() {
             <p className="font-mono text-sm text-white/40 max-w-lg mb-10 leading-relaxed">
               Book a 20-minute strategy call. We&apos;ll show you exactly how the system works and whether it&apos;s right for your firm.
             </p>
-            <Link
+            <TrackedLink
               href="/book-call"
+              eventName="cta_click"
+              eventMeta={{ location: "home_final_cta", target: "/book-call" }}
               className="px-10 py-5 border border-white/50 text-white font-mono text-sm tracking-widest uppercase flex items-center gap-3 group/c mx-auto hover:bg-white hover:text-black transition-colors"
             >
               Book a Strategy Call
               <ArrowRight className="w-5 h-5 group-hover/c:translate-x-1 transition-transform" />
-            </Link>
+            </TrackedLink>
           </section>
         </Reveal>
 

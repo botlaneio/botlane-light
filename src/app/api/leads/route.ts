@@ -7,6 +7,7 @@ type LeadPayload = {
   monthlyTarget: string;
   message?: string;
   website?: string;
+  elapsedMs?: number;
   sourcePage: "contact" | "book-call";
 };
 
@@ -60,6 +61,9 @@ function validateLead(payload: LeadPayload): string | null {
   if (!payload.sourcePage || !["contact", "book-call"].includes(payload.sourcePage)) {
     return "Invalid lead source.";
   }
+  if (typeof payload.elapsedMs === "number" && payload.elapsedMs < 1500) {
+    return "Submission blocked. Please try again.";
+  }
   return null;
 }
 
@@ -88,6 +92,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: validationError }, { status: 400 });
   }
 
+  const leadId = `lead_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+
   const webhookUrl = process.env.LEAD_WEBHOOK_URL;
   if (webhookUrl) {
     await fetch(webhookUrl, {
@@ -96,6 +102,7 @@ export async function POST(request: NextRequest) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        leadId,
         ...payload,
         receivedAt: new Date().toISOString(),
         ip,
@@ -104,11 +111,12 @@ export async function POST(request: NextRequest) {
     });
   } else {
     console.info("Lead captured", {
+      leadId,
       ...payload,
       receivedAt: new Date().toISOString(),
       ip,
     });
   }
 
-  return NextResponse.json({ ok: true }, { status: 200 });
+  return NextResponse.json({ ok: true, leadId }, { status: 200 });
 }

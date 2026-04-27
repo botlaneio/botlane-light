@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { trackEvent } from "@/lib/track-event";
 
 type LeadCaptureFormProps = {
   sourcePage: "contact" | "book-call";
@@ -25,16 +26,22 @@ const initialState: FormState = {
 };
 
 export function LeadCaptureForm({ sourcePage }: LeadCaptureFormProps) {
+  const startedAtRef = useRef<number>(0);
   const [form, setForm] = useState<FormState>(initialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  useEffect(() => {
+    startedAtRef.current = Date.now();
+  }, []);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
     setIsSuccess(false);
     setIsSubmitting(true);
+    trackEvent("lead_form_submit_attempt", { sourcePage });
 
     try {
       const response = await fetch("/api/leads", {
@@ -49,20 +56,31 @@ export function LeadCaptureForm({ sourcePage }: LeadCaptureFormProps) {
           monthlyTarget: form.monthlyTarget,
           message: form.message,
           website: form.website,
+          elapsedMs: Date.now() - startedAtRef.current,
           sourcePage,
         }),
       });
 
-      const data = (await response.json()) as { error?: string };
+      const data = (await response.json()) as { error?: string; leadId?: string };
       if (!response.ok) {
         setError(data.error ?? "Submission failed. Please try again.");
+        trackEvent("lead_form_submit_error", {
+          sourcePage,
+          status: response.status,
+        });
         return;
       }
 
+      trackEvent("lead_form_submit_success", {
+        sourcePage,
+        leadId: data.leadId ?? "none",
+      });
       setIsSuccess(true);
       setForm(initialState);
+      startedAtRef.current = Date.now();
     } catch {
       setError("Network error. Please try again.");
+      trackEvent("lead_form_submit_error", { sourcePage, status: "network_error" });
     } finally {
       setIsSubmitting(false);
     }

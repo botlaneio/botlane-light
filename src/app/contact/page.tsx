@@ -2,6 +2,7 @@ import Link from "next/link";
 import { LeadCaptureForm } from "@/components/lead-capture-form";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { TrackedLink } from "@/components/tracked-link";
 
 const nextSteps = [
   {
@@ -48,12 +49,14 @@ export default function ContactPage() {
             with a form, scheduler embed, or CRM integration when ready.
           </p>
           <div className="flex items-center justify-center gap-4">
-            <Link
+            <TrackedLink
               href="/book-call"
+              eventName="cta_click"
+              eventMeta={{ location: "contact_hero", target: "/book-call" }}
               className="px-8 py-4 border border-white/50 font-mono text-sm tracking-widest uppercase hover:bg-white hover:text-black transition-colors"
             >
               Start Onboarding
-            </Link>
+            </TrackedLink>
             <Link
               href="/"
               className="px-8 py-4 border border-white/25 font-mono text-sm tracking-widest uppercase text-white/70 hover:text-white transition-colors"
