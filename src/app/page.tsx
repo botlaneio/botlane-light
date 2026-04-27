@@ -2,12 +2,12 @@
 
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useEffect } from "react";
-import { useRef, useState } from "react";
-import { ArrowRight, Database, Mail, Calendar, X, CheckCircle2, TrendingUp, MessageSquare, Zap, Shield, Target, Users } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, Database, Mail, Calendar, X, CheckCircle2, Zap, Shield, Target, Users } from "lucide-react";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { PipelineSimulator } from "@/components/pipeline-simulator";
 import { TrackedLink } from "@/components/tracked-link";
-import { useInView } from "framer-motion";
 
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -77,9 +77,6 @@ type SchematicNode = {
 };
 
 export default function Home() {
-  const metricsRef = useRef<HTMLElement | null>(null);
-  const metricsInView = useInView(metricsRef, { once: true, margin: "-120px" });
-  const [pipelineStep, setPipelineStep] = useState(0);
   const cursorX = useMotionValue(-400);
   const cursorY = useMotionValue(-400);
   const springX = useSpring(cursorX, { stiffness: 240, damping: 30, mass: 0.25 });
@@ -111,44 +108,6 @@ export default function Home() {
       }
     };
   }, [cursorX, cursorY]);
-
-  useEffect(() => {
-    if (!metricsInView) {
-      return;
-    }
-
-    const interval = window.setInterval(() => {
-      setPipelineStep((prev) => (prev < 3 ? prev + 1 : prev));
-    }, 1100);
-
-    return () => window.clearInterval(interval);
-  }, [metricsInView]);
-
-  const pipelineMetrics = [
-    {
-      icon: <Database className="w-3 h-3" />,
-      label: "LEADS_FOUND",
-      values: [320, 780, 1240, 1240],
-    },
-    {
-      icon: <Mail className="w-3 h-3" />,
-      label: "OUTREACH_SENT",
-      values: [0, 1900, 4500, 4500],
-    },
-    {
-      icon: <MessageSquare className="w-3 h-3" />,
-      label: "REPLIES",
-      values: [0, 0, 52, 84],
-    },
-    {
-      icon: <Calendar className="w-3 h-3" />,
-      label: "MEETINGS_BOOKED",
-      values: [0, 0, 0, 12],
-      highlight: true,
-    },
-  ];
-  const pipelineStages = ["Lead detected", "Message sent", "Reply received", "Meeting booked"];
-  const pipelineProgress = (pipelineStep / (pipelineStages.length - 1)) * 100;
 
   return (
     <main className="min-h-screen bg-black relative overflow-hidden flex flex-col font-sans text-white w-full">
@@ -255,6 +214,14 @@ export default function Home() {
                 className="px-7 py-3.5 border border-white/25 text-white/75 font-mono text-sm tracking-widest uppercase cta-glow"
               >
                 See How It Works
+              </TrackedLink>
+              <TrackedLink
+                href="#pipeline-experience"
+                eventName="cta_click"
+                eventMeta={{ location: "home_hero", target: "#pipeline-experience" }}
+                className="px-7 py-3.5 border border-white/30 text-white/80 font-mono text-sm tracking-widest uppercase cta-glow"
+              >
+                Run Live Demo →
               </TrackedLink>
             </motion.div>
           </div>
@@ -372,72 +339,9 @@ export default function Home() {
 
         {/* ── 03 AI DEMO ── */}
         <Reveal delay={0.05}>
-          <section id="metrics" ref={metricsRef} className="w-full">
+          <section id="metrics" className="w-full">
             <SectionTag index="03" label="SYSTEM_METRICS" />
-            <div className="border border-white/15 bg-white/[0.015] p-10">
-              <div className="flex items-center justify-between border-b border-white/10 pb-5 mb-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-8 h-8 border border-white/25 flex items-center justify-center text-white/50">
-                    <TrendingUp className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold uppercase text-sm">Q3_CAMPAIGN: MSP_SERVICES</h3>
-                    <p className="font-mono text-[10px] text-white/30">STATUS: ACTIVE • LAST_PING: 2m AGO</p>
-                  </div>
-                </div>
-                <span className="hidden md:block font-mono text-[10px] border border-white/25 px-2 py-1 text-white/50">HEALTH: OPTIMAL</span>
-              </div>
-              <div className="mb-7 border border-white/12 bg-black/30 p-4">
-                <div className="flex items-center justify-between gap-4 mb-4">
-                  <p className="font-mono text-[10px] text-white/45 tracking-widest uppercase">
-                    Live pipeline simulation
-                  </p>
-                  <span className="font-mono text-[10px] text-white/60 border border-white/20 px-2 py-1 uppercase tracking-widest">
-                    Stage {pipelineStep + 1}/{pipelineStages.length}
-                  </span>
-                </div>
-                <div className="relative h-[2px] bg-white/10 mb-4 overflow-hidden">
-                  <motion.div
-                    className="absolute left-0 top-0 h-full bg-white/60"
-                    animate={{ width: `${pipelineProgress}%` }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                  />
-                </div>
-                <div className="grid md:grid-cols-4 gap-2 font-mono text-[10px] tracking-widest uppercase">
-                  {pipelineStages.map((step, index) => (
-                    <motion.div
-                      key={step}
-                      animate={{
-                        opacity: pipelineStep >= index ? 1 : 0.45,
-                      }}
-                      transition={{ duration: 0.35 }}
-                      className={`px-2.5 py-2 border text-white/80 ${
-                        pipelineStep === index ? "border-white/55" : "border-white/15"
-                      }`}
-                    >
-                      {step}
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {pipelineMetrics.map((c) => (
-                  <div key={c.label}
-                    className={`p-5 border flex flex-col gap-3 cursor-default hover:border-white/50 hover:bg-white/[0.04] transition-colors ${c.highlight ? "border-white/40" : "border-white/12"}`}>
-                    <div className="font-mono text-[10px] text-white/35 flex items-center gap-2">{c.icon}{c.label}</div>
-                    <motion.div
-                      key={`${c.label}-${pipelineStep}`}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className={`font-mono font-bold ${c.highlight ? "text-4xl" : "text-2xl text-white/75"}`}
-                    >
-                      {c.values[pipelineStep].toLocaleString()}
-                    </motion.div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <PipelineSimulator />
           </section>
         </Reveal>
 
