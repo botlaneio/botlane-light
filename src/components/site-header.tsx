@@ -65,9 +65,12 @@ export function SiteHeader() {
               {item.label}
             </Link>
           ))}
-          <button className="px-4 py-2 border border-white/40 text-white/70 uppercase font-mono text-xs hover:bg-white hover:text-black transition-colors">
+          <Link
+            href="/book-call"
+            className="px-4 py-2 border border-white/40 text-white/70 uppercase font-mono text-xs hover:bg-white hover:text-black transition-colors"
+          >
             Initialize
-          </button>
+          </Link>
         </nav>
       </div>
 
@@ -90,12 +93,13 @@ export function SiteHeader() {
               </Link>
             ))}
           </div>
-          <button
-            type="button"
+          <Link
+            href="/book-call"
+            onClick={closeMobileMenu}
             className="mt-4 w-full px-4 py-2 border border-white/40 text-white/70 uppercase font-mono text-xs hover:bg-white hover:text-black transition-colors"
           >
-          Initialize
-        </button>
+            Initialize
+          </Link>
         </nav>
       )}
     </header>

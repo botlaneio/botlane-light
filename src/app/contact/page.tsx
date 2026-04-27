@@ -47,9 +47,12 @@ export default function ContactPage() {
             with a form, scheduler embed, or CRM integration when ready.
           </p>
           <div className="flex items-center justify-center gap-4">
-            <button className="px-8 py-4 border border-white/50 font-mono text-sm tracking-widest uppercase hover:bg-white hover:text-black transition-colors">
+            <Link
+              href="/book-call"
+              className="px-8 py-4 border border-white/50 font-mono text-sm tracking-widest uppercase hover:bg-white hover:text-black transition-colors"
+            >
               Start Onboarding
-            </button>
+            </Link>
             <Link
               href="/"
               className="px-8 py-4 border border-white/25 font-mono text-sm tracking-widest uppercase text-white/70 hover:text-white transition-colors"

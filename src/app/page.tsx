@@ -3,6 +3,7 @@
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useEffect } from "react";
 import { ArrowRight, Database, Mail, Calendar, X, CheckCircle2, TrendingUp, MessageSquare, Zap, Shield, Target, Users } from "lucide-react";
+import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
@@ -102,10 +103,12 @@ export default function Home() {
               <p className="font-mono text-xs text-white/35 tracking-widest uppercase">[ 5–40 qualified meetings/month depending on plan ]</p>
             </motion.div>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.35 }} className="flex gap-4 mt-2">
-              <motion.button whileHover={{ backgroundColor: "#fff", color: "#000" }} transition={{ duration: 0.15 }}
-                className="px-7 py-3.5 border border-white/50 text-white font-mono text-sm tracking-widest uppercase flex items-center gap-3 group/b">
+              <Link
+                href="/book-call"
+                className="px-7 py-3.5 border border-white/50 text-white font-mono text-sm tracking-widest uppercase flex items-center gap-3 group/b hover:bg-white hover:text-black transition-colors"
+              >
                 Build_Pipeline <ArrowRight className="w-4 h-4 group-hover/b:translate-x-1 transition-transform" />
-              </motion.button>
+              </Link>
             </motion.div>
           </div>
 
@@ -291,10 +294,12 @@ export default function Home() {
                       <span className="text-white/40">&gt;</span>TGT: {t.target}
                     </li>
                   </ul>
-                  <motion.button whileHover={{ backgroundColor: "#fff", color: "#000" }} transition={{ duration: 0.15 }}
-                    className="w-full py-3 border border-white/25 text-white/55 font-mono text-xs uppercase">
+                  <Link
+                    href="/book-call"
+                    className="w-full py-3 border border-white/25 text-white/55 font-mono text-xs uppercase text-center hover:bg-white hover:text-black transition-colors"
+                  >
                     INITIALIZE_{t.tier}
-                  </motion.button>
+                  </Link>
                 </motion.div>
               ))}
             </div>
@@ -370,11 +375,13 @@ export default function Home() {
             <p className="font-mono text-sm text-white/40 max-w-lg mb-10 leading-relaxed">
               Book a 20-minute strategy call. We&apos;ll show you exactly how the system works and whether it&apos;s right for your firm.
             </p>
-            <motion.button whileHover={{ backgroundColor: "#fff", color: "#000" }} transition={{ duration: 0.15 }}
-              className="px-10 py-5 border border-white/50 text-white font-mono text-sm tracking-widest uppercase flex items-center gap-3 group/c mx-auto">
+            <Link
+              href="/book-call"
+              className="px-10 py-5 border border-white/50 text-white font-mono text-sm tracking-widest uppercase flex items-center gap-3 group/c mx-auto hover:bg-white hover:text-black transition-colors"
+            >
               Book a Strategy Call
               <ArrowRight className="w-5 h-5 group-hover/c:translate-x-1 transition-transform" />
-            </motion.button>
+            </Link>
           </section>
         </Reveal>
 
