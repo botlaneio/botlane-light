@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { persistEvent } from "@/lib/server/persistence";
 
 type EventPayload = {
   event: string;
@@ -69,10 +70,13 @@ export async function POST(request: NextRequest) {
 
   const webhookUrl = process.env.ANALYTICS_WEBHOOK_URL;
   const eventEnvelope = {
+    eventId: `evt_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`,
     ...payload,
     ip,
     receivedAt: new Date().toISOString(),
   };
+
+  await persistEvent(eventEnvelope);
 
   if (webhookUrl) {
     await fetch(webhookUrl, {

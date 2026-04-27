@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { persistLead } from "@/lib/server/persistence";
 
 type LeadPayload = {
   name: string;
@@ -93,6 +94,16 @@ export async function POST(request: NextRequest) {
   }
 
   const leadId = `lead_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+  const receivedAt = new Date().toISOString();
+  const leadEnvelope = {
+    leadId,
+    status: "new",
+    ...payload,
+    receivedAt,
+    ip,
+  };
+
+  await persistLead(leadEnvelope);
 
   const webhookUrl = process.env.LEAD_WEBHOOK_URL;
   if (webhookUrl) {
@@ -101,21 +112,11 @@ export async function POST(request: NextRequest) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        leadId,
-        ...payload,
-        receivedAt: new Date().toISOString(),
-        ip,
-      }),
+      body: JSON.stringify(leadEnvelope),
       cache: "no-store",
     });
   } else {
-    console.info("Lead captured", {
-      leadId,
-      ...payload,
-      receivedAt: new Date().toISOString(),
-      ip,
-    });
+    console.info("Lead captured", leadEnvelope);
   }
 
   return NextResponse.json({ ok: true, leadId }, { status: 200 });

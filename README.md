@@ -31,6 +31,7 @@ App runs at [http://localhost:3000](http://localhost:3000).
 
 - `LEAD_WEBHOOK_URL` (optional) - receives form submissions from `/api/leads` as JSON payload.
 - `ANALYTICS_WEBHOOK_URL` (optional) - receives event payloads from `/api/events`.
+- `DATA_DIR` (optional) - folder for JSONL persistence (`leads.jsonl` and `events.jsonl`). Defaults to `.data`.
 
 ## Project Structure
 
