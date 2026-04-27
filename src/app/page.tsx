@@ -1,8 +1,10 @@
 "use client";
 
 import { motion, useMotionValue, useSpring } from "framer-motion";
-import { useEffect, useRef } from "react";
-import { ArrowRight, Database, Mail, Calendar, X, CheckCircle2, TrendingUp, MessageSquare, Terminal, Zap, Shield, Target, Users } from "lucide-react";
+import { useEffect } from "react";
+import { ArrowRight, Database, Mail, Calendar, X, CheckCircle2, TrendingUp, MessageSquare, Zap, Shield, Target, Users } from "lucide-react";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 
 function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
@@ -22,11 +24,27 @@ function SectionTag({ index, label }: { index: string; label: string }) {
     <div className="flex flex-col items-center gap-3 mb-12">
       <div className="w-[1px] h-8 bg-white/15" />
       <span className="font-mono text-[10px] text-white/40 uppercase tracking-widest border border-white/15 px-3 py-1 bg-black">
-        {index} // {label}
+        {index}
+        {" // "}
+        {label}
       </span>
     </div>
   );
 }
+
+type SchematicNode = {
+  icon: React.ReactNode;
+  label: string;
+  sub: string;
+  indent?: string;
+};
+
+type MetricCard = {
+  icon: React.ReactNode;
+  label: string;
+  val: string;
+  highlight?: boolean;
+};
 
 export default function Home() {
   const cursorX = useMotionValue(-400);
@@ -63,28 +81,7 @@ export default function Home() {
 
       <div className="relative z-10 w-full max-w-[1300px] mx-auto px-8 lg:px-16 pt-12 pb-32 flex flex-col gap-32">
 
-        {/* NAV */}
-        <header className="w-full flex justify-between items-end border-b border-white/15 pb-4">
-          <div className="flex items-center gap-4">
-            <motion.div whileHover={{ backgroundColor: "#fff", color: "#000" }} transition={{ duration: 0.15 }}
-              className="w-10 h-10 border border-white/40 flex items-center justify-center text-white cursor-pointer">
-              <Terminal className="w-5 h-5" />
-            </motion.div>
-            <div>
-              <h1 className="text-2xl font-bold tracking-widest uppercase">BOTLANE.IO</h1>
-              <p className="font-mono text-xs text-white/40 tracking-widest">PIPELINE-AS-A-SERVICE // v1.0.0</p>
-            </div>
-          </div>
-          <div className="hidden md:flex gap-8 font-mono text-xs tracking-widest text-white/35">
-            {["METRICS", "PRICING", "CONTACT"].map(l => (
-              <a key={l} href={`#${l.toLowerCase()}`} className="hover:text-white transition-colors">{l}</a>
-            ))}
-            <motion.button whileHover={{ backgroundColor: "#fff", color: "#000" }} transition={{ duration: 0.15 }}
-              className="px-4 py-2 border border-white/40 text-white/70 uppercase font-mono text-xs">
-              Initialize
-            </motion.button>
-          </div>
-        </header>
+        <SiteHeader />
 
         {/* ── HERO ── */}
         <section className="w-full grid lg:grid-cols-[1fr_280px] gap-8 border border-white/15 bg-white/[0.015] p-10">
@@ -115,14 +112,14 @@ export default function Home() {
           {/* Schematic */}
           <div className="hidden lg:flex flex-col gap-5 border-l border-white/10 pl-8 relative justify-center">
             <span className="font-mono text-[10px] text-white/25 uppercase absolute -top-4 right-0 bg-black px-2 border border-white/10">SCHEMATIC VIEW</span>
-            {[
+            {([
               { icon: <Database className="w-4 h-4" />, label: "B2B_CONTACTS", sub: "2,000+ VERIFIED" },
               { icon: <Mail className="w-4 h-4" />, label: "AI_ENGINE", sub: "MULTI-CHANNEL", indent: "ml-4" },
               { icon: <Calendar className="w-4 h-4" />, label: "BOOKED_MEETINGS", sub: "READY TO CLOSE", indent: "ml-8" },
-            ].map((n, i) => (
+            ] as SchematicNode[]).map((n, i) => (
               <motion.div key={n.label} whileHover={{ borderColor: "rgba(255,255,255,0.6)", backgroundColor: "rgba(255,255,255,0.05)" }}
                 transition={{ duration: 0.15 }}
-                className={`border border-white/15 bg-transparent p-4 flex items-center gap-3 relative cursor-default ${(n as any).indent ?? ""}`}>
+                className={`border border-white/15 bg-transparent p-4 flex items-center gap-3 relative cursor-default ${n.indent ?? ""}`}>
                 {i > 0 && <div className="absolute left-8 -top-5 w-[1px] h-5 bg-white/10" />}
                 {i < 2 && <div className="absolute left-8 -bottom-5 w-[1px] h-5 bg-white/10" />}
                 <div className="w-9 h-9 border border-white/25 flex items-center justify-center text-white/60">{n.icon}</div>
@@ -213,17 +210,17 @@ export default function Home() {
                 <span className="hidden md:block font-mono text-[10px] border border-white/25 px-2 py-1 text-white/50">HEALTH: OPTIMAL</span>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {[
+                {([
                   { icon: <Database className="w-3 h-3" />, label: "LEADS_FOUND", val: "1,240" },
                   { icon: <Mail className="w-3 h-3" />, label: "OUTREACH_SENT", val: "4,500" },
                   { icon: <MessageSquare className="w-3 h-3" />, label: "REPLIES", val: "84" },
                   { icon: <Calendar className="w-3 h-3" />, label: "MEETINGS_BOOKED", val: "12", highlight: true },
-                ].map(c => (
+                ] as MetricCard[]).map(c => (
                   <motion.div key={c.label} whileHover={{ borderColor: "rgba(255,255,255,0.5)", backgroundColor: "rgba(255,255,255,0.04)" }}
                     transition={{ duration: 0.15 }}
-                    className={`p-5 border flex flex-col gap-3 cursor-default ${(c as any).highlight ? "border-white/40" : "border-white/12"}`}>
+                    className={`p-5 border flex flex-col gap-3 cursor-default ${c.highlight ? "border-white/40" : "border-white/12"}`}>
                     <div className="font-mono text-[10px] text-white/35 flex items-center gap-2">{c.icon}{c.label}</div>
-                    <div className={`font-mono font-bold ${(c as any).highlight ? "text-4xl" : "text-2xl text-white/75"}`}>{c.val}</div>
+                    <div className={`font-mono font-bold ${c.highlight ? "text-4xl" : "text-2xl text-white/75"}`}>{c.val}</div>
                   </motion.div>
                 ))}
               </div>
@@ -346,7 +343,7 @@ export default function Home() {
             <SectionTag index="07" label="TRANSPARENCY" />
             <div className="grid md:grid-cols-3 gap-8 text-center">
               {[
-                { icon: <Shield className="w-6 h-6" />, title: "No Long-Term Lock-In", body: "Monthly rolling contracts. If we don't perform, you can leave. We prefer it that way." },
+                { icon: <Shield className="w-6 h-6" />, title: "No Long-Term Lock-In", body: "Monthly rolling contracts. If we don&apos;t perform, you can leave. We prefer it that way." },
                 { icon: <Target className="w-6 h-6" />, title: "No Vanity Metrics", body: "We report on meetings booked, not opens, clicks, or impressions. You only care about calls." },
                 { icon: <Zap className="w-6 h-6" />, title: "Ramp in 2–3 Weeks", body: "Setup fee covers infrastructure. First outreach goes live within 14–21 days of onboarding." },
               ].map(c => (
@@ -371,20 +368,17 @@ export default function Home() {
               Ready to stop relying on referrals?
             </h2>
             <p className="font-mono text-sm text-white/40 max-w-lg mb-10 leading-relaxed">
-              Book a 20-minute strategy call. We'll show you exactly how the system works and whether it's right for your firm.
+              Book a 20-minute strategy call. We&apos;ll show you exactly how the system works and whether it&apos;s right for your firm.
             </p>
             <motion.button whileHover={{ backgroundColor: "#fff", color: "#000" }} transition={{ duration: 0.15 }}
               className="px-10 py-5 border border-white/50 text-white font-mono text-sm tracking-widest uppercase flex items-center gap-3 group/c mx-auto">
               Book a Strategy Call
               <ArrowRight className="w-5 h-5 group-hover/c:translate-x-1 transition-transform" />
             </motion.button>
-            <div className="w-full flex justify-between items-center mt-20 border-t border-white/8 pt-5 font-mono text-[10px] text-white/20 uppercase">
-              <span>BOTLANE.IO // PIPELINE-AS-A-SERVICE</span>
-              <span>END_OF_DOCUMENT</span>
-            </div>
           </section>
         </Reveal>
 
+        <SiteFooter />
       </div>
     </main>
   );
