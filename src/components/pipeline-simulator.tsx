@@ -304,10 +304,13 @@ export function PipelineSimulator({ className }: PipelineSimulatorProps) {
       email: String(state.channels.email),
       linkedin: String(state.channels.linkedin),
     });
-    return `${window.location.pathname}?${params.toString()}#pipeline-experience`;
+    return `/?${params.toString()}#pipeline-experience`;
   }, [state]);
 
   useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
     const params = new URLSearchParams(window.location.search);
     const offer = params.get("offer");
     const location = params.get("location");
@@ -331,6 +334,9 @@ export function PipelineSimulator({ className }: PipelineSimulatorProps) {
   }, []);
 
   useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
     const params = new URLSearchParams({
       offer: state.offer,
       location: state.location,
@@ -451,6 +457,9 @@ export function PipelineSimulator({ className }: PipelineSimulatorProps) {
 
   async function copyShareUrl() {
     try {
+      if (typeof window === "undefined") {
+        return;
+      }
       await navigator.clipboard.writeText(window.location.origin + shareUrl);
       setShareCopied(true);
       window.setTimeout(() => setShareCopied(false), 1300);
