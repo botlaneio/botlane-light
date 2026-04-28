@@ -64,7 +64,7 @@ function TypewriterLine({
         window.clearInterval(interval);
       }
     };
-  }, [text, speedMs]);
+  }, [text, speedMs, startDelayMs]);
 
   useEffect(() => {
     const caretInterval = window.setInterval(() => {
