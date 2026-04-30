@@ -1,0 +1,19 @@
+<svg width="520" height="140" viewBox="0 0 520 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="14" y="24" width="92" height="92" rx="24" stroke="rgba(255,255,255,0.82)" stroke-width="6"/>
+  <rect x="38" y="52" width="18" height="14" rx="6" fill="#8FF4FF"/>
+  <rect x="64" y="52" width="18" height="14" rx="6" fill="#8FF4FF"/>
+  <rect x="40" y="80" width="40" height="8" rx="4" fill="rgba(255,255,255,0.82)"/>
+  <path d="M60 24V12" stroke="rgba(255,255,255,0.82)" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="60" cy="8" r="5" fill="rgba(255,255,255,0.82)"/>
+  <text
+    x="130"
+    y="88"
+    fill="rgba(255,255,255,0.96)"
+    font-size="64"
+    font-family="Inter, Arial, sans-serif"
+    font-weight="700"
+    letter-spacing="0.6"
+  >
+    Botlane
+  </text>
+</svg>

@@ -93,21 +93,8 @@ function parseScenario(value: string | null): ScenarioId | null {
 }
 
 export function PipelineSimulator({ className }: PipelineSimulatorProps) {
-  const [scenarioId, setScenarioId] = useState<ScenarioId>(() => {
-    if (typeof window === "undefined") return DEFAULT_SCENARIO;
-
-    const params = new URLSearchParams(window.location.search);
-    const scenarioFromQuery = parseScenario(params.get("scenario"));
-    if (scenarioFromQuery) return scenarioFromQuery;
-
-    try {
-      const stored = window.localStorage.getItem(STORAGE_KEY);
-      const parsed = stored ? JSON.parse(stored) : null;
-      return parseScenario(parsed?.scenario ?? null) ?? DEFAULT_SCENARIO;
-    } catch {
-      return DEFAULT_SCENARIO;
-    }
-  });
+  const [scenarioId, setScenarioId] = useState<ScenarioId>(DEFAULT_SCENARIO);
+  const [isScenarioReady, setIsScenarioReady] = useState(false);
   const [focus, setFocus] = useState<FocusId>("targeting");
   const [showTechnical, setShowTechnical] = useState(false);
 
@@ -126,6 +113,32 @@ export function PipelineSimulator({ className }: PipelineSimulatorProps) {
     if (typeof window === "undefined") return;
 
     const params = new URLSearchParams(window.location.search);
+    const scenarioFromQuery = parseScenario(params.get("scenario"));
+    if (scenarioFromQuery) {
+      setScenarioId(scenarioFromQuery);
+      setIsScenarioReady(true);
+      return;
+    }
+
+    try {
+      const stored = window.localStorage.getItem(STORAGE_KEY);
+      const parsed = stored ? JSON.parse(stored) : null;
+      const storedScenario = parseScenario(parsed?.scenario ?? null);
+      if (storedScenario) {
+        setScenarioId(storedScenario);
+      }
+    } catch {
+      // Ignore storage read failures.
+    }
+
+    setIsScenarioReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isScenarioReady) return;
+    if (typeof window === "undefined") return;
+
+    const params = new URLSearchParams(window.location.search);
     params.set("scenario", scenarioId);
     window.history.replaceState({}, "", `${window.location.pathname}?${params.toString()}#pipeline-experience`);
 
@@ -134,7 +147,7 @@ export function PipelineSimulator({ className }: PipelineSimulatorProps) {
     } catch {
       // Ignore storage write failures.
     }
-  }, [scenarioId]);
+  }, [scenarioId, isScenarioReady]);
 
   function handleScenarioSelect(next: ScenarioId) {
     setScenarioId(next);

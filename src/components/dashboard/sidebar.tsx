@@ -11,11 +11,12 @@ const navItems = [
 export function Sidebar() {
   return (
     <aside className="hidden min-h-screen w-64 border-r border-white/10 bg-white/[0.015] px-4 py-5 md:block">
-      <Link className="flex items-center gap-2 text-lg font-semibold uppercase tracking-wide text-white" href="/dashboard">
-        <span className="flex h-7 w-7 items-center justify-center border border-white/30 text-white/90">
-          BT
-        </span>
-        Botlane
+      <Link className="inline-flex items-center" href="/dashboard">
+        <img
+          src="/botlane-logo-horizontal.svg"
+          alt="Botlane"
+          className="h-8 w-auto"
+        />
       </Link>
       <p className="mt-3 border border-emerald-400/60 px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-emerald-300">
         <Activity className="mr-1 inline h-3 w-3" />

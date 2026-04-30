@@ -50,17 +50,18 @@ export function SiteHeader() {
         <div className="flex items-center gap-4">
           <Link
             href="/"
-            className="w-10 h-10 border border-white/40 flex items-center justify-center text-white hover:bg-white hover:text-black transition-colors accent-interactive"
+            className="inline-flex items-center accent-interactive"
             aria-label="Go to home"
             onClick={closeMobileMenu}
           >
-            <span className="font-mono text-xs">BT</span>
+            <img
+              src="/botlane-logo-horizontal.svg"
+              alt="Botlane"
+              className="h-8 w-auto sm:h-10"
+            />
           </Link>
-          <div>
-            <Link href="/" className="text-lg sm:text-2xl font-bold tracking-widest uppercase">
-              BOTLANE.IO
-            </Link>
-            <p className="hidden sm:block font-mono text-xs text-white/40 tracking-widest">
+          <div className="hidden sm:block">
+            <p className="font-mono text-xs text-white/40 tracking-widest">
               PIPELINE-AS-A-SERVICE // v1.0.0
             </p>
           </div>
